@@ -1,50 +1,100 @@
-const links = document.querySelectorAll('.link');
-const speed = 2; // Speed of the links
-const width = window.innerWidth;
-const height = window.innerHeight;
+const links = document.querySelectorAll('.bouncing-link');
+const speed = 1.5; // constant speed of movement
+const accelerationFactor = 2.0; // acceleration factor on hover
+const bounds = {
+  x: window.innerWidth,
+  y: window.innerHeight
+};
 
-let positions = Array.from(links).map(link => {
-    const rect = link.getBoundingClientRect();
-    return {
-        element: link,
-        x: Math.random() * (width - rect.width),
-        y: Math.random() * (height - rect.height),
-        dx: (Math.random() > 0.5 ? 1 : -1) * speed,
-        dy: (Math.random() > 0.5 ? 1 : -1) * speed
-    };
+// Set initial position and velocity for each link
+links.forEach(link => {
+  link.style.left = `${Math.random() * bounds.x}px`;
+  link.style.top = `${Math.random() * bounds.y}px`;
+  
+  link.velocityX = speed * (Math.random() < 0.5 ? 1 : -1); // Random horizontal direction
+  link.velocityY = speed * (Math.random() < 0.5 ? 1 : -1); // Random vertical direction
+
+  link.addEventListener('mouseover', () => {
+    link.accelerating = true;
+  });
+
+  link.addEventListener('mouseout', () => {
+    link.accelerating = false;
+  });
 });
 
-function updatePositions() {
-    positions.forEach((linkData, index) => {
-        const { element, x, y, dx, dy } = linkData;
-        const rect = element.getBoundingClientRect();
-        
-        // Move the link by its velocity
-        linkData.x += dx;
-        linkData.y += dy;
+function update() {
+  links.forEach(link => {
+    let rect = link.getBoundingClientRect();
 
-        // Bounce off the walls
-        if (linkData.x <= 0 || linkData.x + rect.width >= width) {
-            linkData.dx *= -1; // Reverse direction
-        }
-        if (linkData.y <= 0 || linkData.y + rect.height >= height) {
-            linkData.dy *= -1; // Reverse direction
-        }
+    // Update position based on velocity
+    let newLeft = rect.left + link.velocityX;
+    let newTop = rect.top + link.velocityY;
 
-        // Update position in style
-        element.style.left = `${linkData.x}px`;
-        element.style.top = `${linkData.y}px`;
+    // Ensure the link stays within bounds
+    if (newLeft <= 0 || newLeft + rect.width >= bounds.x) {
+      link.velocityX *= -1;
+      newLeft = Math.max(0, Math.min(newLeft, bounds.x - rect.width));
+    }
+    if (newTop <= 0 || newTop + rect.height >= bounds.y) {
+      link.velocityY *= -1;
+      newTop = Math.max(0, Math.min(newTop, bounds.y - rect.height));
+    }
+
+    // Check for collisions with other links
+    links.forEach(otherLink => {
+      if (link !== otherLink) {
+        let otherRect = otherLink.getBoundingClientRect();
+        if (checkCollision(rect, otherRect)) {
+          let dx = rect.left - otherRect.left;
+          let dy = rect.top - otherRect.top;
+          let angle = Math.atan2(dy, dx);
+          let targetX = Math.cos(angle);
+          let targetY = Math.sin(angle);
+
+          let ax = (targetX - link.velocityX) * 0.05;
+          let ay = (targetY - link.velocityY) * 0.05;
+
+          link.velocityX += ax;
+          link.velocityY += ay;
+
+          otherLink.velocityX -= ax;
+          otherLink.velocityY -= ay;
+        }
+      }
     });
 
-    requestAnimationFrame(updatePositions); // Keep the animation running
+    // Apply the new position
+    link.style.left = `${newLeft}px`;
+    link.style.top = `${newTop}px`;
+
+    // Normalize the velocity to maintain a constant speed
+    normalizeVelocity(link);
+
+    if (link.accelerating) {
+      link.velocityX *= accelerationFactor;
+      link.velocityY *= accelerationFactor;
+    }
+  });
+
+  requestAnimationFrame(update);
 }
 
-// Initialize positions and set them dynamically
-links.forEach((linkData, index) => {
-    const link = linkData.element;
-    link.style.position = 'absolute';
-    link.style.left = `${linkData.x}px`;
-    link.style.top = `${linkData.y}px`;
-});
+// Function to normalize the velocity to maintain a constant speed
+function normalizeVelocity(link) {
+  let length = Math.sqrt(link.velocityX * link.velocityX + link.velocityY * link.velocityY);
+  link.velocityX = (link.velocityX / length) * speed;
+  link.velocityY = (link.velocityY / length) * speed;
+}
 
-updatePositions(); // Start the animation loop
+// Start the animation
+update();
+
+// Function to check for collisions between two rectangles
+function checkCollision(rect1, rect2) {
+  if (rect1.left > rect2.right || rect1.right < rect2.left || rect1.top > rect2.bottom || rect1.bottom < rect2.top) {
+    return false;
+  }
+  return true;
+}
+
