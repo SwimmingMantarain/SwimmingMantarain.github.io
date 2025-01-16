@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    background-color: #333;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.link {
+    position: absolute;
+    color: white;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    user-select: none;
+    pointer-events: none;
+    cursor: pointer;
+}
