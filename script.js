@@ -1,18 +1,22 @@
 const links = document.querySelectorAll('.bouncing-link');
-const speed = 1.5; // constant speed of movement
-const accelerationFactor = 2.0; // acceleration factor on hover
+const baseSpeed = 1.5; // Base speed of movement
+const maxSpeed = 6.0; // Maximum speed during acceleration
+const accelerationRate = 0.05; // How quickly it accelerates
+const decelerationRate = 0.01; // How quickly it decelerates
 const bounds = {
   x: window.innerWidth,
-  y: window.innerHeight
+  y: window.innerHeight,
 };
 
 // Set initial position and velocity for each link
 links.forEach(link => {
   link.style.left = `${Math.random() * bounds.x}px`;
   link.style.top = `${Math.random() * bounds.y}px`;
-  
-  link.velocityX = speed * (Math.random() < 0.5 ? 1 : -1); // Random horizontal direction
-  link.velocityY = speed * (Math.random() < 0.5 ? 1 : -1); // Random vertical direction
+
+  link.velocityX = baseSpeed * (Math.random() < 0.5 ? 1 : -1); // Random horizontal direction
+  link.velocityY = baseSpeed * (Math.random() < 0.5 ? 1 : -1); // Random vertical direction
+  link.currentSpeed = baseSpeed; // Current speed
+  link.accelerating = false;
 
   link.addEventListener('mouseover', () => {
     link.accelerating = true;
@@ -25,7 +29,19 @@ links.forEach(link => {
 
 function update() {
   links.forEach(link => {
-    let rect = link.getBoundingClientRect();
+    const rect = link.getBoundingClientRect();
+
+    // Update velocity based on acceleration or deceleration
+    if (link.accelerating && link.currentSpeed < maxSpeed) {
+      link.currentSpeed = Math.min(maxSpeed, link.currentSpeed + accelerationRate);
+    } else if (!link.accelerating && link.currentSpeed > baseSpeed) {
+      link.currentSpeed = Math.max(baseSpeed, link.currentSpeed - decelerationRate);
+    }
+
+    // Normalize velocity to match the current speed
+    const velocityLength = Math.sqrt(link.velocityX ** 2 + link.velocityY ** 2);
+    link.velocityX = (link.velocityX / velocityLength) * link.currentSpeed;
+    link.velocityY = (link.velocityY / velocityLength) * link.currentSpeed;
 
     // Update position based on velocity
     let newLeft = rect.left + link.velocityX;
@@ -44,16 +60,16 @@ function update() {
     // Check for collisions with other links
     links.forEach(otherLink => {
       if (link !== otherLink) {
-        let otherRect = otherLink.getBoundingClientRect();
+        const otherRect = otherLink.getBoundingClientRect();
         if (checkCollision(rect, otherRect)) {
-          let dx = rect.left - otherRect.left;
-          let dy = rect.top - otherRect.top;
-          let angle = Math.atan2(dy, dx);
-          let targetX = Math.cos(angle);
-          let targetY = Math.sin(angle);
+          const dx = rect.left - otherRect.left;
+          const dy = rect.top - otherRect.top;
+          const angle = Math.atan2(dy, dx);
+          const targetX = Math.cos(angle);
+          const targetY = Math.sin(angle);
 
-          let ax = (targetX - link.velocityX) * 0.05;
-          let ay = (targetY - link.velocityY) * 0.05;
+          const ax = (targetX - link.velocityX) * 0.05;
+          const ay = (targetY - link.velocityY) * 0.05;
 
           link.velocityX += ax;
           link.velocityY += ay;
@@ -67,34 +83,20 @@ function update() {
     // Apply the new position
     link.style.left = `${newLeft}px`;
     link.style.top = `${newTop}px`;
-
-    // Normalize the velocity to maintain a constant speed
-    normalizeVelocity(link);
-
-    if (link.accelerating) {
-      link.velocityX *= accelerationFactor;
-      link.velocityY *= accelerationFactor;
-    }
   });
 
   requestAnimationFrame(update);
 }
 
-// Function to normalize the velocity to maintain a constant speed
-function normalizeVelocity(link) {
-  let length = Math.sqrt(link.velocityX * link.velocityX + link.velocityY * link.velocityY);
-  link.velocityX = (link.velocityX / length) * speed;
-  link.velocityY = (link.velocityY / length) * speed;
+// Function to check for collisions between two rectangles
+function checkCollision(rect1, rect2) {
+  return !(
+    rect1.left > rect2.right ||
+    rect1.right < rect2.left ||
+    rect1.top > rect2.bottom ||
+    rect1.bottom < rect2.top
+  );
 }
 
 // Start the animation
 update();
-
-// Function to check for collisions between two rectangles
-function checkCollision(rect1, rect2) {
-  if (rect1.left > rect2.right || rect1.right < rect2.left || rect1.top > rect2.bottom || rect1.bottom < rect2.top) {
-    return false;
-  }
-  return true;
-}
-
