@@ -47,14 +47,18 @@ function update() {
     let newLeft = rect.left + link.velocityX;
     let newTop = rect.top + link.velocityY;
 
-    // Ensure the link stays within bounds
+    // Ensure the link stays within bounds and pulse when it hits the wall
     if (newLeft <= 0 || newLeft + rect.width >= bounds.x) {
       link.velocityX *= -1;
       newLeft = Math.max(0, Math.min(newLeft, bounds.x - rect.width));
+      link.classList.add('pulse');
+      createWallEffect(link, 'x');
     }
     if (newTop <= 0 || newTop + rect.height >= bounds.y) {
       link.velocityY *= -1;
       newTop = Math.max(0, Math.min(newTop, bounds.y - rect.height));
+      link.classList.add('pulse');
+      createWallEffect(link, 'y');
     }
 
     // Check for collisions with other links
@@ -88,6 +92,43 @@ function update() {
   requestAnimationFrame(update);
 }
 
+function createWallEffect(link, axis) {
+  const rect = link.getBoundingClientRect();
+  const line = document.createElement('div');
+  line.classList.add('wall-effect');
+
+  if (axis === 'x') {
+    // Vertical line aligned with the wall (left or right)
+    if (rect.left <= 10) {
+      // Stuck to the left edge
+      line.style.left = '0px';
+    } else {
+      // Stuck to the right edge
+      line.style.left = `${window.innerWidth - 2}px`;
+    }
+    line.style.top = `${Math.max(0, Math.min(rect.top, window.innerHeight - rect.height))}px`; // Stay within bounds
+    line.style.width = '2px';
+    line.style.height = `${rect.height}px`;
+  } else if (axis === 'y') {
+    // Horizontal line aligned with the wall (top or bottom)
+    if (rect.top <= 10) {
+      // Stuck to the top edge
+      line.style.top = '0px';
+    } else {
+      // Stuck to the bottom edge
+      line.style.top = `${window.innerHeight - 2}px`;
+    }
+    line.style.left = `${Math.max(0, Math.min(rect.left, window.innerWidth - rect.width))}px`; // Stay within bounds
+    line.style.width = `${rect.width}px`;
+    line.style.height = '2px';
+  }
+
+  document.body.appendChild(line);
+
+  // Automatically remove the line after the animation ends
+  setTimeout(() => line.remove(), 5000);
+}
+
 // Function to check for collisions between two rectangles
 function checkCollision(rect1, rect2) {
   return !(
@@ -100,3 +141,4 @@ function checkCollision(rect1, rect2) {
 
 // Start the animation
 update();
+

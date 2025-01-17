@@ -28,4 +28,27 @@
     user-select: none;
     animation: none;
   }
-  
+
+/* Wall effect line styling */
+.wall-effect {
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  animation: fade-in-out 5s ease forwards;
+  z-index: 1000;
+}
+
+/* Fade-in and out animation */
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
