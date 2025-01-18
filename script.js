@@ -1,7 +1,7 @@
 const links = document.querySelectorAll('.bouncing-link');
-const baseSpeed = 1.5; // Base speed of movement
+const baseSpeed = 1.25; // Base speed of movement
 const maxSpeed = 6.0; // Maximum speed during acceleration
-const accelerationRate = 0.05; // How quickly it accelerates
+const accelerationRate = 0.031; // How quickly it accelerates
 const decelerationRate = 0.01; // How quickly it decelerates
 const bounds = {
   x: window.innerWidth,
