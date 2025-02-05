@@ -1,54 +1,92 @@
+/* Reset default margins and padding */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background-color: #000;
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .bouncing-link {
-    position: absolute;
-    color: #fff;
-    font-size: 24px;
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-    user-select: none;
-    animation: none;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* Wall effect line styling */
+/* Apply a retro gradient background and a monospaced font */
+body {
+  background: linear-gradient(135deg, #000000, #001a00, #003300);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Courier New", Courier, monospace;
+  position: relative;
+}
+
+/* Retro header styling */
+header {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+}
+
+header h1 {
+  color: #39ff14;       /* Neon green */
+  text-shadow: 0 0 10px #39ff14;
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+/* Container for bouncing links (covers full viewport) */
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+/* Base style for the bouncing links */
+.bouncing-link {
+  position: absolute;
+  color: #39ff14;       /* Neon green */
+  font-size: 24px;
+  text-decoration: none;
+  user-select: none;
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+  text-shadow: 0 0 5px #39ff14;
+}
+
+/* Hover effect: enlarge slightly and intensify glow */
+.bouncing-link:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 10px #39ff14;
+}
+
+/* Pulse animation on collision */
+@keyframes pulse {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+.pulse {
+  animation: pulse 0.3s ease;
+}
+
+/* Wall effect: neon green lines with glow */
 .wall-effect {
   position: absolute;
-  background: rgba(255, 255, 255, 1);
+  background: #39ff14;
+  box-shadow: 0 0 10px #39ff14;
   animation: fade-in-out 5s ease forwards;
   z-index: 1000;
 }
 
-/* Fade-in and out animation */
+/* Fade-in/out animation for wall effect */
 @keyframes fade-in-out {
-  0% {
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
 }
