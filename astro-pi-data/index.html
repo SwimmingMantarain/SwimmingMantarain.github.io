@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon and manifest files -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <title>Astro Pi Data</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.0/src/style.css" />
+  <script src="https://cdn.jsdelivr.net/gh/anuraghazra/Verly.js@v1.2.0/dist/verly.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.2/src/VerlyRange.js"></script>
+  <link rel="stylesheet" href="/astro-pi-data/astro-pi.css" />
+</head>
+<body>
+  <h1>Speed of the ISS</h1>
+  <div class="text-container">
+    <a>Average ISS Speed: <span id="iss-avg-speed">-</span> kmps</a>
+    <a>Current ISS Speed: <span id="iss-cur-speed">-</span> kmps</a>
+  </div>
+
+  <div class="img-container">
+    <img src="/astro-pi-data/temp1.jpg" alt="B.E.A.N.S" class="img">
+    <img src="/astro-pi-data/temp2.jpg" alt="B.E.A.N.S" class="img">
+  </div>
+
+  <main class="slider-wrapper">
+    <section class="all-sliders">
+      <label class="slidercontainer first">
+        <span>Green Bean</span>
+        <input class="slider" id="range-slider" type="range" min="1" step="0.01" max="100" value="80">
+      </label>
+    </section>
+  </main>
+
+  <!-- Link to external script -->
+  <script src="/astro-pi-data/astro-pi.js"></script>
+</body>
+</html>

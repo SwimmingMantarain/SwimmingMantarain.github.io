@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align items to the top */
+    align-items: center; /* Center items horizontally */
+    position: relative;
+    font-family: 'Source Code Pro', monospace;
+    color: rgb(216, 255, 216);
+    text-shadow: 0 0 2.5px rgb(216, 255, 216), 0 0 5px rgb(216, 255, 216);
+    user-select: none; /* Prevent image from being dragged */
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+a {
+    text-decoration: none;
+    font-weight: 200;
+    font-size: 24px;
+}
+
+span {
+    text-decoration: none;
+    font-weight: bolder;
+    font-size: 28px;
+}
+
+h1 {
+    font-size: 60px;
+    font-weight: bolder;
+    text-align: center;
+    margin-top: 20px; /* Add margin-top for spacing from the top */
+    margin-bottom: 12.5px; /* Optional: space below the heading */
+    text-decoration: underline;
+}
+
+.img-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12.5px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 0 20px;
+    column-gap: 20px;
+    position: relative; /* Position relative for absolute positioning of overlay */
+}
+
+img {
+    object-fit: cover;
+    width: 500px;
+    height: 500px;
+    border-radius: 3%;
+    border: 2px solid rgb(216, 255, 216);
+}
+
