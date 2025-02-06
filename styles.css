@@ -1,92 +1,129 @@
-/* Reset default margins and padding */
+/* Reset margins, paddings, and set box sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Apply a retro gradient background and a monospaced font */
+/* Base body styling with retro hacker effects */
 body {
-  background: linear-gradient(135deg, #000000, #001a00, #003300);
+  background-color: #000;
   overflow: hidden;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Courier New", Courier, monospace;
   position: relative;
+  font-family: 'Courier New', Courier, monospace;
+  color: #0f0; /* Neon green for text */
 }
 
-/* Retro header styling */
+/* Create a retro animated grid / scanline effect using a pseudo-element */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 0, 0.05) 2px,
+      rgba(0, 255, 0, 0.05) 4px
+    );
+  animation: scanlines 2s linear infinite;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+/* Animation for scanlines */
+@keyframes scanlines {
+  from { background-position: 0 0; }
+  to { background-position: 0 4px; }
+}
+
+/* Container that fills the viewport */
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Above the scanlines */
+}
+
+/* Styling for the bouncing links */
+.bouncing-link {
+  position: absolute;
+  color: #0f0;
+  font-size: 24px;
+  text-decoration: none;
+  font-family: 'Courier New', Courier, monospace;
+  user-select: none;
+  text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
+  border: 1px solid #0f0;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition: opacity 0.2s;
+}
+
+/* Flicker effect on hover */
+.bouncing-link:hover {
+  animation: flicker 0.2s alternate infinite;
+}
+
+/* Keyframes for flicker animation */
+@keyframes flicker {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Header styling with neon glow and flicker effect */
 header {
   position: absolute;
   top: 20px;
   width: 100%;
   text-align: center;
-  z-index: 10;
+  z-index: 2;
 }
 
 header h1 {
-  color: #39ff14;       /* Neon green */
-  text-shadow: 0 0 10px #39ff14;
-  font-size: 2rem;
-  letter-spacing: 2px;
+  font-size: 36px;
+  color: #0f0;
+  text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+  animation: headerFlicker 3s infinite;
 }
 
-/* Container for bouncing links (covers full viewport) */
-.container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 5;
+/* Flicker animation for header */
+@keyframes headerFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
-/* Base style for the bouncing links */
-.bouncing-link {
-  position: absolute;
-  color: #39ff14;       /* Neon green */
-  font-size: 24px;
-  text-decoration: none;
-  user-select: none;
-  transition: transform 0.2s ease, text-shadow 0.2s ease;
-  text-shadow: 0 0 5px #39ff14;
-}
-
-/* Hover effect: enlarge slightly and intensify glow */
-.bouncing-link:hover {
-  transform: scale(1.1);
-  text-shadow: 0 0 10px #39ff14;
-}
-
-/* Pulse animation on collision */
-@keyframes pulse {
-  0% {
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.2) rotate(10deg);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-  }
-}
-.pulse {
-  animation: pulse 0.3s ease;
-}
-
-/* Wall effect: neon green lines with glow */
+/* Wall effect line styling with neon green glow */
 .wall-effect {
   position: absolute;
-  background: #39ff14;
-  box-shadow: 0 0 10px #39ff14;
+  background: #0f0;
   animation: fade-in-out 5s ease forwards;
   z-index: 1000;
+  box-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
 }
 
-/* Fade-in/out animation for wall effect */
+/* Fade-in and out animation for the wall effect */
 @keyframes fade-in-out {
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
