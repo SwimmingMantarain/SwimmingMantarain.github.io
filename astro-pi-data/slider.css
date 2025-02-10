@@ -1,0 +1,126 @@
+/* Update slider.css */
+:root {
+  --slider-track-color: rgba(216, 255, 216, 0.15);
+  --slider-thumb-color: rgb(216, 255, 216);
+  --slider-thumb-border: rgba(216, 255, 216, 0.75);
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: twinkle 1.5s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Slider container */
+.slider-container {
+  position: relative;
+  width: 400px;
+  margin: 40px auto;
+  padding-top: 40px; /* Space for the bubble */
+}
+
+/* Value bubble */
+.value-bubble {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgb(216, 255, 216);
+  color: black;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+/* Bubble tail */
+.value-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgb(216, 255, 216);
+}
+
+/* Show bubble when slider is active */
+.slider-container.active .value-bubble {
+  opacity: 1;
+}
+
+/* Slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Track styling */
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: var(--slider-track-color);
+  border-radius: 2px;
+}
+
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  background: var(--slider-track-color);
+  border-radius: 2px;
+}
+
+/* Thumb styling */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--slider-thumb-color);
+  margin-top: -6px;
+  box-shadow: 0 0 10px rgba(216, 255, 216, 0.5);
+  border: 2px solid var(--slider-thumb-border);
+  transition: box-shadow 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--slider-thumb-color);
+  box-shadow: 0 0 10px rgba(216, 255, 216, 0.5);
+  border: 2px solid var(--slider-thumb-border);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Hover effects */
+input[type="range"]:hover::-webkit-slider-thumb {
+  box-shadow: 0 0 15px rgba(216, 255, 216, 0.7);
+}
+
+input[type="range"]:hover::-moz-range-thumb {
+  box-shadow: 0 0 15px rgba(216, 255, 216, 0.7);
+}

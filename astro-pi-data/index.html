@@ -10,12 +10,14 @@
   <link rel="manifest" href="/site.webmanifest" />
   <title>Astro Pi Data</title>
   <!-- Link to external stylesheet -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.0/src/style.css" />
-  <script src="https://cdn.jsdelivr.net/gh/anuraghazra/Verly.js@v1.2.0/dist/verly.bundle.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.2/src/VerlyRange.js"></script>
-  <link rel="stylesheet" href="/astro-pi-data/astro-pi.css" />
+  <link rel="stylesheet" href="astro-pi.css" />
+  <link rel="stylesheet" href="slider.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+  <!-- Background container -->
+  <div class="background" id="background"></div>
+
   <h1>Speed of the ISS</h1>
   <div class="text-container">
     <a>Average ISS Speed: <span id="iss-avg-speed">-</span> kmps</a>
@@ -23,20 +25,22 @@
   </div>
 
   <div class="img-container">
-    <img src="/astro-pi-data/temp1.jpg" alt="B.E.A.N.S" class="img">
-    <img src="/astro-pi-data/temp2.jpg" alt="B.E.A.N.S" class="img">
+    <div class="text-container">
+      <img src="temp1.jpg" alt="B.E.A.N.S" class="img">
+      <span>beans</span>
+    </div>
+    <div class="text-container">
+      <img src="temp2.jpg" alt="B.E.A.N.S" class="img">
+      <span>beans</span>
+    </div>
   </div>
 
-  <main class="slider-wrapper">
-    <section class="all-sliders">
-      <label class="slidercontainer first">
-        <span>Green Bean</span>
-        <input class="slider" id="range-slider" type="range" min="1" step="0.01" max="100" value="80">
-      </label>
-    </section>
-  </main>
+  <div class="slider-container">
+    <div class="value-bubble">0%</div>
+    <input type="range" id="timeSlider" min="0" max="100" value="0"/>
+  </div>
 
   <!-- Link to external script -->
-  <script src="/astro-pi-data/astro-pi.js"></script>
+  <script src="astro-pi.js"></script>
 </body>
 </html>

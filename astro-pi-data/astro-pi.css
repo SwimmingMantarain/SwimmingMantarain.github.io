@@ -33,7 +33,7 @@ a {
     font-size: 24px;
 }
 
-span {
+#iss-avg-speed #iss-cur-speed {
     text-decoration: none;
     font-weight: bolder;
     font-size: 28px;
@@ -66,5 +66,10 @@ img {
     height: 500px;
     border-radius: 3%;
     border: 2px solid rgb(216, 255, 216);
+}
+
+.img-time-text {
+    font-style: italic;
+    font-weight: 100 !important;
 }
 
