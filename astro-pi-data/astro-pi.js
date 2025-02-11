@@ -46,7 +46,7 @@ function createShootingStar() {
     container.appendChild(shooter);
     
     // Remove element after animation
-    setTimeout(() => shooter.remove(), duration * 1000);
+    setTimeout(() => shooter.remove(), duration * 5000);
 }
   
 // Add shooting star animation
@@ -112,6 +112,6 @@ function initializeSlider() {
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     createStarfield();
-    setInterval(createShootingStar, 3000);
+    setInterval(createShootingStar, 1500);
     initializeSlider();
 });
