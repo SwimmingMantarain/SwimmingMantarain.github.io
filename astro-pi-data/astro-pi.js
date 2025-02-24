@@ -83,12 +83,12 @@ function initializeSlider() {
     // Update bubble position and value
     function updateBubble() {
         const value = slider.value;
-        bubble.textContent = value + '%';
+        bubble.textContent = value + " & " + (Number(value) + 1);
         
         // Calculate bubble position based on slider value
         const sliderWidth = slider.offsetWidth;
         const bubbleWidth = bubble.offsetWidth;
-        const position = (value / 100) * (sliderWidth - bubbleWidth);
+        const position = ((value * 4 + 4) / 100) * (sliderWidth - bubbleWidth);
         bubble.style.left = `${position + bubbleWidth/2}px`;
     }
 

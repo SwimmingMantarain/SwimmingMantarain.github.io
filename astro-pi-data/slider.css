@@ -49,9 +49,10 @@
   opacity: 0;
   transition: opacity 0.2s ease;
   pointer-events: none;
+  text-wrap: nowrap;
 }
 
-/* Bubble tail */
+/* Bubble tail 
 .value-bubble::after {
   content: '';
   position: absolute;
@@ -63,7 +64,7 @@
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 6px solid rgb(216, 255, 216);
-}
+}*/
 
 /* Show bubble when slider is active */
 .slider-container.active .value-bubble {
