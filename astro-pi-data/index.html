@@ -24,18 +24,29 @@
     <a>Current ISS Speed: <span id="iss-cur-speed">-</span> kmps</a>
   </div>
 
+  <!-- Dataset selector dropdown -->
+  <div class="dropdown-container">
+    <label for="dataset-select">Select Dataset:</label>
+    <select id="dataset-select">
+      <option value="exoclass">Exoclass</option>
+      <option value="gracias">Gracias</option>
+      <option value="oceanso">Oceanso</option>
+      <option value="tars">Tars</option>
+    </select>
+  </div>
+
   <div class="img-container">
     <div class="text-container">
-      <img src="temp1.jpg" alt="B.E.A.N.S" class="img">
+      <img id="img1" src="photos/exoclass/photo_217_53244805352_o.jpg" alt="ISS Image 1" class="img">
     </div>
     <div class="text-container">
-      <img src="temp2.jpg" alt="B.E.A.N.S" class="img">
+      <img id="img2" src="photos/exoclass/photo_218_53246178570_o.jpg" alt="ISS Image 2" class="img">
     </div>
   </div>
 
   <div class="slider-container">
     <div class="value-bubble">0%</div>
-    <input type="range" id="timeSlider" min="1" max="24" value="0"/>
+    <input type="range" id="timeSlider" min="1" max="24" value="1"/>
   </div>
 
   <!-- Link to external script -->

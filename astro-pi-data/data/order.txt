@@ -1,1 +1,0 @@
-# speed between images, path to older image, path to newer image

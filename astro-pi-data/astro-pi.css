@@ -1,75 +1,141 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: #000;
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Align items to the top */
-    align-items: center; /* Center items horizontally */
-    position: relative;
-    font-family: 'Source Code Pro', monospace;
-    color: rgb(216, 255, 216);
-    text-shadow: 0 0 2.5px rgb(216, 255, 216), 0 0 5px rgb(216, 255, 216);
-    user-select: none; /* Prevent image from being dragged */
+  background-color: #000;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align items to the top */
+  align-items: center; /* Center items horizontally */
+  position: relative;
+  font-family: 'Source Code Pro', monospace;
+  color: rgb(216, 255, 216);
+  text-shadow: 0 0 2.5px rgb(216, 255, 216), 0 0 5px rgb(216, 255, 216);
+  user-select: none; /* Prevent image from being dragged */
 }
 
 .text-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: fit-content;
-    white-space: nowrap; /* Prevent text from wrapping */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  white-space: nowrap; /* Prevent text from wrapping */
+  margin: 5px 0;
 }
 
 a {
-    text-decoration: none;
-    font-weight: 200;
-    font-size: 24px;
+  text-decoration: none;
+  font-weight: 200;
+  font-size: 24px;
 }
 
-#iss-avg-speed #iss-cur-speed {
-    text-decoration: none;
-    font-weight: bolder;
-    font-size: 28px;
+#iss-avg-speed, #iss-cur-speed {
+  text-decoration: none;
+  font-weight: bolder;
+  font-size: 28px;
 }
 
 h1 {
-    font-size: 60px;
-    font-weight: bolder;
-    text-align: center;
-    margin-top: 20px; /* Add margin-top for spacing from the top */
-    margin-bottom: 12.5px; /* Optional: space below the heading */
-    text-decoration: underline;
+  font-size: 60px;
+  font-weight: bolder;
+  text-align: center;
+  margin-top: 20px; /* Add margin-top for spacing from the top */
+  margin-bottom: 12.5px; /* Optional: space below the heading */
+  text-decoration: underline;
 }
 
 .img-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12.5px;
-    width: fit-content;
-    box-sizing: border-box;
-    padding: 0 20px;
-    column-gap: 20px;
-    position: relative; /* Position relative for absolute positioning of overlay */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12.5px;
+  width: fit-content;
+  box-sizing: border-box;
+  padding: 0 20px;
+  column-gap: 20px;
+  position: relative; /* Position relative for absolute positioning of overlay */
 }
 
 img {
-    object-fit: cover;
-    width: 500px;
-    height: 500px;
-    border-radius: 3%;
-    border: 2px solid rgb(216, 255, 216);
+  object-fit: cover;
+  width: 500px;
+  height: 500px;
+  border-radius: 3%;
+  border: 2px solid rgb(216, 255, 216);
 }
 
 .img-time-text {
-    font-style: italic;
-    font-weight: 100 !important;
+  font-style: italic;
+  font-weight: 100 !important;
+  margin-top: 5px;
 }
 
+/* Dropdown styling */
+.dropdown-container {
+  margin: 20px auto;
+  text-align: center;
+  width: fit-content;
+  position: relative;
+}
+
+.dropdown-container label {
+  font-size: 18px;
+  margin-right: 10px;
+  color: rgb(216, 255, 216);
+  text-shadow: 0 0 2.5px rgb(216, 255, 216), 0 0 5px rgb(216, 255, 216);
+  display: inline-block;
+}
+
+#dataset-select {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: rgb(216, 255, 216);
+  border: 2px solid rgb(216, 255, 216);
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 0 10px rgba(216, 255, 216, 0.3);
+  transition: all 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  min-width: 150px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+#dataset-select:hover {
+  box-shadow: 0 0 15px rgba(216, 255, 216, 0.5);
+}
+
+#dataset-select:focus {
+  box-shadow: 0 0 20px rgba(216, 255, 216, 0.7);
+}
+
+/* Custom dropdown arrow */
+.dropdown-container::after {
+  content: '▼';
+  font-size: 12px;
+  color: rgb(216, 255, 216);
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Option styling */
+#dataset-select option {
+  background-color: rgba(0, 20, 0, 0.9);
+  color: rgb(216, 255, 216);
+  font-family: 'Source Code Pro', monospace;
+  padding: 10px;
+  text-transform: capitalize;
+}
