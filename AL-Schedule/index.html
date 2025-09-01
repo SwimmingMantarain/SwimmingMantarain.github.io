@@ -37,9 +37,12 @@
     table.timetable th{background:rgba(255,255,255,0.02);font-weight:600}
     .slot-title{font-weight:700;margin-bottom:6px}
     .muted{opacity:0.18}
-    .hidden-cell{display:none}
     .option{font-size:13px}
     .room{font-size:12px;color:var(--muted)}
+
+    /* Hide columns when filtering */
+    .hidden-column { display: none; }
+    .hidden-row { display: none; }
 
     /* small screen adjustments */
     @media (max-width:760px){
@@ -71,7 +74,6 @@
 
         <div class="actions">
           <div style="display:flex;flex-direction:column;gap:8px">
-            <label><input type="checkbox" id="highlightOnly"> <span style="margin-left:8px">Only show selected (hide others)</span></label>
             <label><input type="checkbox" id="persist"> <span style="margin-left:8px">Remember (local storage)<span></label>
           </div>
           <div style="display:flex;flex-direction:column;gap:8px;margin-left:6px">
@@ -171,7 +173,6 @@
 
     // persist toggle and controls
     const persistCheckbox = document.getElementById('persist');
-    const highlightOnlyCheckbox = document.getElementById('highlightOnly');
     const selectAllBtn = document.getElementById('selectAll');
     const clearAllBtn = document.getElementById('clearAll');
     const exportJsonBtn = document.getElementById('exportJson');
@@ -202,8 +203,11 @@
       const thead = document.createElement('thead');
       const tr = document.createElement('tr');
       tr.appendChild(Object.assign(document.createElement('th'),{innerText:'Period'}));
-      for(const d of timetable.days){
-        const th = document.createElement('th'); th.innerText = d; tr.appendChild(th);
+      for(let dayIndex = 0; dayIndex < timetable.days.length; dayIndex++){
+        const th = document.createElement('th'); 
+        th.innerText = timetable.days[dayIndex]; 
+        th.dataset.dayIndex = dayIndex;
+        tr.appendChild(th);
       }
       thead.appendChild(tr); table.appendChild(thead);
 
@@ -212,13 +216,18 @@
       for(let pIndex=0;pIndex<timetable.periods.length;pIndex++){
         const period = timetable.periods[pIndex];
         const tr = document.createElement('tr');
+        tr.dataset.periodIndex = pIndex;
         tr.appendChild(Object.assign(document.createElement('td'),{innerText:period, style:'font-weight:700; width:64px'}));
 
-        for(const d of timetable.days){
+        for(let dayIndex = 0; dayIndex < timetable.days.length; dayIndex++){
+          const d = timetable.days[dayIndex];
           const dayArr = timetable.data[d];
           const cellObj = dayArr[pIndex];
           if(!cellObj){ // fallback empty
-            tr.appendChild(document.createElement('td'));
+            const td = document.createElement('td');
+            td.dataset.dayIndex = dayIndex;
+            td.dataset.subjects = JSON.stringify([]);
+            tr.appendChild(td);
             continue;
           }
           if(cellObj.skip){
@@ -226,16 +235,12 @@
             continue;
           }
           const td = document.createElement('td');
+          td.dataset.dayIndex = dayIndex;
 
           const span = cellObj.span||1;
           if(span>1) td.rowSpan = span;
 
-          // create inner content
-          const title = document.createElement('div');
-          title.className='slot-title';
-          title.innerText = cellObj.text || '';
-          td.appendChild(title);
-
+          // create inner content - only show the options, not the redundant text
           const opts = document.createElement('div');
           opts.className='options';
           if(cellObj.options && cellObj.options.length){
@@ -245,6 +250,12 @@
               dEl.innerHTML = `<strong>${o.subject}</strong> <span class='room'>${o.room||''}</span>`;
               opts.appendChild(dEl);
             });
+          } else if(cellObj.text) {
+            // Handle cells with text but no structured options (like empty slots)
+            const dEl = document.createElement('div');
+            dEl.className='option';
+            dEl.innerHTML = cellObj.text;
+            opts.appendChild(dEl);
           }
           td.appendChild(opts);
           td.dataset.subjects = JSON.stringify((cellObj.options||[]).map(o=>o.subject));
@@ -260,27 +271,20 @@
 
     function refreshFilter(){
       const selected = getSelectedSubjects();
-      const only = highlightOnlyCheckbox.checked;
-      // If none selected -> show all normally
-      const anySelected = selected.length>0;
-      document.querySelectorAll('#timetable td').forEach(td=>{
-        if(td.dataset && td.dataset.subjects){
-          const subjects = JSON.parse(td.dataset.subjects);
-          const intersects = subjects.some(s=>selected.includes(s));
-          if(!anySelected){
-            td.classList.remove('muted'); td.classList.remove('hidden-cell'); td.style.display='table-cell';
-          } else {
-            if(intersects){
-              // match
-              td.classList.remove('muted'); td.classList.remove('hidden-cell'); td.style.display='table-cell';
-              // add a little glow when matched
-              td.style.boxShadow = '0 6px 18px rgba(96,165,250,0.06)';
-            } else {
-              td.style.boxShadow = '';
-              if(only){ td.classList.add('hidden-cell'); td.style.display='none'; }
-              else { td.classList.add('muted'); td.style.display='table-cell'; }
-            }
-          }
+      const anySelected = selected.length > 0;
+      
+      // Simple highlight mode - show everything but highlight matches
+      document.querySelectorAll('#timetable td[data-subjects]').forEach(td => {
+        const subjects = JSON.parse(td.dataset.subjects || '[]');
+        const intersects = subjects.some(s => selected.includes(s));
+        
+        td.classList.remove('muted');
+        td.style.boxShadow = '';
+        
+        if(anySelected && intersects) {
+          td.style.boxShadow = '0 6px 18px rgba(96,165,250,0.06)';
+        } else if(anySelected && !intersects) {
+          td.classList.add('muted');
         }
       });
 
@@ -294,7 +298,6 @@
     document.querySelectorAll('#subjects input[type=checkbox]').forEach(i=>{
       i.addEventListener('change', ()=>{ refreshFilter(); });
     });
-    highlightOnlyCheckbox.addEventListener('change', refreshFilter);
     persistCheckbox.addEventListener('change', ()=>{
       if(!persistCheckbox.checked) localStorage.removeItem('tt.selected'); else localStorage.setItem('tt.selected', JSON.stringify(getSelectedSubjects()));
     });
